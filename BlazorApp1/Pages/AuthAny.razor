@@ -1,3 +1,11 @@
 @page "/authany"
 
-<h1>Any Authorised User</h1>
+<AuthorizeView>
+    <Authorized>
+        <h1>Any Authorised User</h1>
+        <p>You have permissions to access this page.</p>
+    </Authorized>
+    <NotAuthorized>
+        <h1>Access Denied!</h1>
+    </NotAuthorized>
+</AuthorizeView>

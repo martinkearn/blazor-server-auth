@@ -1,9 +1,6 @@
-using Microsoft.AspNetCore.Authentication;
+global using BlazorApp1.Policies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
@@ -20,7 +17,13 @@ builder.Services.AddControllersWithViews()
     // By default, all incoming requests will be authorized according to the default policy
     options.FallbackPolicy = options.DefaultPolicy;
 }); */
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(config =>
+{
+    config.AddPolicy("IsAdminEmail", policy =>
+        policy.Requirements.Add(new IsAdminEmailRequirement("martinkearn@live.co.uk")));
+});
+
+builder.Services.AddSingleton<IAuthorizationHandler, IsAdminEmailHandler>();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor()
