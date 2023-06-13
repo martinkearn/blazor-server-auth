@@ -5,13 +5,30 @@
 
 <h1>Blazor Server Auth</h1>
 
-<p>@userDetails</p>
+<p>Claims: @user?.Claims.Count()</p>
+<ul>
+    @foreach (var claim in user?.Claims!)
+    {
+        <li>@claim.Type: @claim.Value</li>
+    }
+</ul>
+
+<p>Identities: @user?.Identities.Count()</p>
+<ul>
+    @foreach (var identity in user?.Identities!)
+    {
+        <li>@identity.NameClaimType: @identity.Name</li>
+    }
+</ul>
+
+<p>Identity.Name: @user?.Identity?.Name</p>
 
 @code {
-    private string userDetails = string.Empty;
+    private System.Security.Claims.ClaimsPrincipal? user;
 
     protected override async Task OnInitializedAsync()
     {
         var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        user = authState.User;
     }
 }
