@@ -1,0 +1,11 @@
+@page "/admin-users"
+
+<AuthorizeView Policy="IsAdminEmail">
+    <Authorized>
+        <h1>Admin User</h1>
+        <p>You are an admin user based on your email. You have permissions to access this page.</p>
+    </Authorized>
+    <NotAuthorized>
+        <h1>Access Denied!</h1>
+    </NotAuthorized>
+</AuthorizeView>
