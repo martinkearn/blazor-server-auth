@@ -32,12 +32,14 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-app.MapRazorComponents<App>()
-    .AddInteractiveServerRenderMode();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
 app.MapControllers();
+app.UseAntiforgery();
+app.MapRazorComponents<App>()
+    .AddInteractiveServerRenderMode();
 
 // Redirect default built-in signed out page to root
 app.UseRewriter(new RewriteOptions().Add(
