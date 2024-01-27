@@ -1,10 +1,23 @@
 using BlazorApp8.Components;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Rewrite;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Auth services
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAdB2C"));
+builder.Services.AddControllersWithViews()
+    .AddMicrosoftIdentityUI();
+builder.Services.AddCascadingAuthenticationState();
+
+
 // Add services to the container.
 builder.Services.AddRazorComponents()
-    .AddInteractiveServerComponents();
+    .AddInteractiveServerComponents()
+    .AddMicrosoftIdentityConsentHandler();
 
 var app = builder.Build();
 
@@ -19,9 +32,21 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-app.UseAntiforgery();
-
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
+app.UseRouting();
+app.UseAuthorization();
+app.UseAntiforgery();
+app.MapControllers();
+
+// Redirect default built-in signed out page to root
+app.UseRewriter(new RewriteOptions().Add(
+    context =>
+    {
+        if (context.HttpContext.Request.Path == "/MicrosoftIdentity/Account/SignedOut")
+        {
+            context.HttpContext.Response.Redirect("/");
+        }
+    }));
 
 app.Run();
