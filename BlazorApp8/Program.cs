@@ -1,4 +1,5 @@
 using BlazorApp8.Components;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Identity.Web;
@@ -12,12 +13,16 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 builder.Services.AddControllersWithViews()
     .AddMicrosoftIdentityUI();
 builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddMicrosoftIdentityConsentHandler();
+builder.Services.AddRazorPages();
+
 
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents()
     .AddMicrosoftIdentityConsentHandler();
+
 
 var app = builder.Build();
 
