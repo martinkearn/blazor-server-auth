@@ -10,10 +10,10 @@
             <AuthorizeView>
                 <Authorized>
                     Hello @context.User.Identity?.Name!
-                    <a href="MicrosoftIdentity/Account/SignOut">Log out</a>
+                    <a href="MicrosoftIdentity/Account/SignOut">Sign out</a>
                 </Authorized>
                 <NotAuthorized>
-                    <a href="/MicrosoftIdentity/Account/SignIn">Sign in with your social account</a>
+                    <a href="/MicrosoftIdentity/Account/SignIn">Sign in</a>
                 </NotAuthorized>
             </AuthorizeView>
         </div>
