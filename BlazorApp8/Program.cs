@@ -31,7 +31,7 @@ builder.Services.AddRazorComponents()
 var app = builder.Build();
 
 //Provided by template
-// Configure the HTTP request pipeline.
+//Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
@@ -39,10 +39,15 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//Provided by template
+//Add Antiforgery Middleware to the request processing pipeline after the call to app.UseRouting. If there are calls to app.UseRouting and app.UseEndpoints, the call to app.UseAntiforgery must go between them. A call to app.UseAntiforgery must be placed after calls to app.UseAuthentication and app.UseAuthorization.
+//Based on https://learn.microsoft.com/en-us/aspnet/core/migration/70-80?view=aspnetcore-8.0&tabs=visual-studio
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseAuthorization();
 app.UseAntiforgery();
+
+//Needed for authentication provider routing
+app.MapControllers();
 
 //Provided by template
 app.MapRazorComponents<App>()
