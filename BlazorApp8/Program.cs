@@ -1,7 +1,5 @@
 using BlazorApp8.Components;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 
@@ -15,8 +13,6 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddMicrosoftIdentityConsentHandler();
 builder.Services.AddRazorPages();
-
-
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -38,22 +34,11 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseRouting();
-app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
 app.MapControllers();
 app.UseAntiforgery();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-
-// Redirect default built-in signed out page to root
-/* app.UseRewriter(new RewriteOptions().Add(
-    context =>
-    {
-        if (context.HttpContext.Request.Path == "/MicrosoftIdentity/Account/SignedOut")
-        {
-            context.HttpContext.Response.Redirect("/");
-        }
-    })); */
 
 app.Run();
